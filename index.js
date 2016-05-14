@@ -30,16 +30,18 @@ module.exports = function (filename, opts) {
 			return;
 		}
 
+		var mode = typeof opts.mode === 'number' ? opts.mode : file.stat ? file.stat.mode : null;
+
 		if (file.isNull() && file.stat && file.stat.isDirectory && file.stat.isDirectory()) {
 			zip.addEmptyDirectory(pathname, {
 				mtime: file.stat.mtime || new Date(),
-				mode: file.stat.mode
+				mode: mode
 			});
 		} else {
 			var stat = {
 				compress: opts.compress,
 				mtime: file.stat ? file.stat.mtime : new Date(),
-				mode: file.stat ? file.stat.mode : null
+				mode: mode
 			};
 
 			if (file.isStream()) {
